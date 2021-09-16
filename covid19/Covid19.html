@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Covid19 簡易資訊系統</title>
+    <link rel="stylesheet" href="style.css">
+    <!-- <Font Awesome小圖示> -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+</head>
+<body onload="countrySelect()">
+    
+<div class="container-grid">
+
+<div class="items item1">
+    <h4>Covid-19 簡易資訊系統</h4>
+    <select id="mySelect" class="dropdown" onchange="countrySelect()">
+    <option value="0">選擇國家</option>
+    <option value="USA">美國</option>
+    <option value="Taiwan" selected>台灣</option>
+    <option value="Japan">日本</option>
+    <option value="China">中國</option>
+    <option value="India">印度</option>
+    </select>
+
+</div>
+<div class="items item2"> 
+    <p style="font-size: 20px;" id="currentDate"></p>
+    <span id="country"></span>
+    <img src="" id="flag">
+
+</div>
+<div class="items item3">
+    <i class="fas fa-head-side-mask"></i> 今日確診：
+    <span id="today"></span>
+    </div>
+    
+<div class="items item4">
+    <i class="fas fa-skull-crossbones"></i> 今日死亡數：
+    <span id="pass"></span>
+</div>
+<div class="items item5">
+    <i class="far fa-clipboard"></i> 累積總個案數：
+    <span id="cases"></span>
+</div>
+<div class="items item6">
+    <i class="fas fa-chart-line"></i> 活躍個案數：
+    <span id="active"></span>
+</div>
+<div class="items item7">
+    <i class="fas fa-hand-holding-medical"></i> 康復個案數：
+    <span id="recovered"></span>
+</div>
+<div class="items item8">
+    <i class="fas fa-vial"></i> 以測試數：
+    <span id="tested"></span>
+</div>
+<div class="items item9">
+    <i class="fas fa-book-dead"></i> 總死亡個案數：
+    <span id="death"></span>
+</div>
+<div class="items item10">
+    <i class="fas fa-biohazard"></i> 死亡率：
+    <span id="rate"></span>
+</div>
+
+
+
+
+
+
+</div>
+
+
+
+
+
+
+</body>
+</html>
+
+<script type="text/javascript">
+
+//抓資料
+
+function countrySelect(){
+
+    var x = document.getElementById("mySelect").value;
+
+
+
+var link = "https://corona.lmao.ninja/v2/countries/"+x;
+
+fetch(link)
+.then((response) => {
+    return response.json();
+})
+.then((data) => {
+    var total=parseFloat(data.cases);
+    var pass=parseFloat(data.deaths);
+    var rate=((pass/total).toFixed(4))*100+'%';
+
+    document.getElementById("country").innerHTML= data.country;
+    document.getElementById("today").innerHTML= data.todayCases.toLocaleString();
+    document.getElementById("pass").innerHTML= data.todayDeaths.toLocaleString();
+    document.getElementById("active").innerHTML= data.active.toLocaleString();
+    document.getElementById("cases").innerHTML= data.cases.toLocaleString();
+    document.getElementById("rate").innerHTML= rate;
+    document.getElementById("death").innerHTML= data.deaths.toLocaleString();
+    document.getElementById("recovered").innerHTML= data.recovered.toLocaleString();
+    document.getElementById("tested").innerHTML= data.tests.toLocaleString();
+    document.getElementById("flag").src= data.countryInfo.flag;
+
+});
+
+}
+
+</script>
